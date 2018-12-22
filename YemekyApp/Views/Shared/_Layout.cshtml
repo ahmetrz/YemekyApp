@@ -1,9 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-
-
-
+    
     <!-- Basic meta info
     ==================== -->
     <meta charset="utf-8" />
@@ -35,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="~/Content/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="~/Content/css/animate.min.css" />
     <link rel="stylesheet" type="text/css" href="~/Content/css/styles.css" />
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" />
     <!-- Modernizr file
     =================== -->
     <script charset="utf-8" type="text/javascript " src="~/Content/js/modernizr.custom.js"></script>
@@ -47,6 +45,7 @@
     <!-- font awesome -->
     <link rel="stylesheet" href="~/Content/font-awesome/css/font-awesome.min.css" />
     <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css">
 
 
 </head>
@@ -72,16 +71,26 @@
                         <div class="container text-center wow pulse">
                             <img src="~/Content/images/logo-white.svg" alt="logo" />
                             <br />
-                            <span style="font-family: 'Quirlycues'; font-size: 50px; font-weight: normal; padding-top: 24px; color: #f9f9f9;">YemekyApp</span>
+                            <span style="font-family: 'Quirlycues'; font-size: 50px; font-weight: normal; padding-top: 24px; color: #f9f9f9;">Hosgeldiniz</span>
+
+                            @User.Identity.Name
                         </div>
                     </div>
                     <div class="logofordark"><img src="~/Content/images/dummy-logo-for-darkbg.png" alt="" /> </div>
                 </li>
                 <li><a href="/" class="active"><i class="fa fa-home"></i><span class="hometext">&nbsp;&nbsp;Anasayfa</span></a></li>
-                <li><a href="#"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;About us<span class="arrow"></span></a></li>
-                <li><a href="#"><i class="fa fa-cogs"></i>&nbsp;&nbsp;Our Services<span class="arrow"></span></a></li>
-                <li><a href="#"><i class="fa fa-question-circle"></i>&nbsp;&nbsp;Faq's<span class="arrow"></span></a></li>
-                <li><a href="#"><i class="fa fa-paper-plane"></i>&nbsp;&nbsp;Contact Us <span class="arrow"></span></a></li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li><a href="@Url.Action("LogOut","Home")"><i class="fa fa-key"></i>&nbsp;&nbsp; Çıkış Yap</a></li>
+
+                }
+                else
+                {
+                    <li><a href="/Home/Login"><i class="fa fa-user-circle"></i>&nbsp;&nbsp;Login<span class="arrow"></span></a></li>
+
+                    <li><a href="/register"><i class="fa fa-user-plus"></i>&nbsp;&nbsp;Register<span class="arrow"></span></a></li>
+
+                }
             </ul>
         </nav>
         <!--Menu HTML Code-->
@@ -99,8 +108,8 @@
 
 
 
-        @RenderBody()
-   
+    @RenderBody()
+
 
 
     <footer>
@@ -129,9 +138,7 @@
             </div>
         </div>
     </footer>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+ 
 
     <!-- JavaScript files
     ===================== -->
@@ -140,24 +147,41 @@
     <script charset="utf-8" src="~/Content/js/wow.min.js"></script>
     <script charset="utf-8" src="~/Content/js/scripts.js"></script>
     <script type="text/javascript" src="~/Content/js/webslidemenu.js"></script>
-    <!--For Demo Only (Remove below css file and Javascript) -->
-    <script type='text/javascript'>
-    $(document).ready(function () {
-      $(".gry, .blue, .green, .red, .orange, .yellow, .purple, .pink, .whitebg, .tranbg").on("click", function () {
-        $(".wsmenu")
-          .removeClass()
-          .addClass('wsmenu pm_' + $(this).attr('class'));
-      });
+    @*<script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>*@
+    <script src="~/Content/slideout.min.js"></script>
+    
+<script>
+    //var slideout = new Slideout({
+    //    'panel': document.getElementById('wsmenu'),
+    //    'menu': document.getElementById('mobile-sub'),
+    //    'padding': 256,
+    //    'tolerance': 70
+    //});
+</script>
 
-      $(".blue-grdt, .gry-grdt, .green-grdt, .red-grdt, .orange-grdt, .yellow-grdt, .purple-grdt, .pink-grdt").on(
-        "click",
-        function () {
-          $(".wsmenu")
-            .removeClass()
-            .addClass('wsmenu pm_' + $(this).attr('class'));
+    <!--For Demo Only (Remove below css file and Javascript) -->
+<script type='text/javascript'>
+    $(document).ready(function () {
+        $(".gry, .blue, .green, .red, .orange, .yellow, .purple, .pink, .whitebg, .tranbg").on("click", function () {
+            $(".wsmenu")
+                .removeClass()
+                .addClass('wsmenu pm_' + $(this).attr('class'));
         });
+
+        $(".blue-grdt, .gry-grdt, .green-grdt, .red-grdt, .orange-grdt, .yellow-grdt, .purple-grdt, .pink-grdt").on(
+            "click",
+            function () {
+                $(".wsmenu")
+                    .removeClass()
+                    .addClass('wsmenu pm_' + $(this).attr('class'));
+            });
     });
-    </script>
-    <!--For Demo Only (End Removable) -->
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
+
+@RenderSection("scripts", required: false)
+<!--For Demo Only (End Removable) -->
 </body>
 </html>

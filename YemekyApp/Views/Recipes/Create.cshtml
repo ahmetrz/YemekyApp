@@ -1,0 +1,249 @@
+﻿@model YemekyApp.Models.Recipe
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section id="items">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-12">
+                <br />
+                <h4>Recipe</h4>
+                <hr />
+
+                <div class="form-row">
+                    <div class="col-md-4 mb-3">
+                        <label for="validationDefault01">Recipe Name</label>
+                        <input type="text" class="form-control" id="recipeName" placeholder="Recipe Name" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="validationDefault02">Time</label>
+                        <input type="time" class="form-control" id="time" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="validationDefaultUsername">Difficulty</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="difficulty" placeholder="Difficulty" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-4 mb-3">
+                        @Html.LabelFor(model => model.CategoryId, "CategoryId", htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                    </div>
+
+
+                    <div class="col-md-4 mb-3">
+                        <label for="validationDefault04">Servings</label>
+                        <input type="text" class="form-control" id="servings" placeholder="Servings" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="validationDefault05">Image</label>
+                        <input type="file" class="form-control" id="image" placeholder="Image">
+                    </div>
+
+                </div>
+                <div class="form-row">
+
+                    <div class="col-md-12 mb-3">
+                        <label for="validationDefault03">Description</label>
+                        <textarea type="text" class="form-control" rows="5" id="description"></textarea>
+                    </div>
+                </div>
+
+
+                <h4>Ingredients</h4>
+                <hr />
+                <div class="form-row">
+                    <div class="col-md-1 mb-3">
+                        <label>Add</label><br />
+                        <button id="addIngredient" class="btn btn-success form-control" type="button"> + </button>
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+                        <label for="validationDefault04">Piece</label>
+                        <input type="number" class="form-control" id="piece" placeholder="Piece">
+                    </div>
+                    <div class="col-md-9 mb-3">
+                        <label for="validationDefault05">Ingredient</label>
+                        <input type="text" class="form-control" id="ingredient" placeholder="Ingredient">
+                    </div>
+
+                    <table id="detailsTable" class="table table-bordered table-responsive">
+                        <thead>
+                            <tr>
+                                <th style="width: 10%;">Piece</th>
+                                <th style="width: 80%;">Ingredient</th>
+                                <th style="width: 10%;">#</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+
+                    </table>
+                </div>
+
+
+
+                <h4>Directions</h4>
+                <hr />
+                <div class="form-row">
+                    <div class="col-md-1 mb-3">
+                        <label>Add</label><br />
+                        <button id="addDirections" class="btn btn-success form-control" type="button"> + </button>
+                    </div>
+                    <div class="col-md-11 mb-3">
+                        <label for="validationDefault05">Directions</label>
+                        <input type="text" class="form-control" id="directions" placeholder="Directions">
+                    </div>
+
+                    <table id="directionsTable" class="table table-bordered table-responsive">
+                        <thead>
+                            <tr>
+                                <th style="width: 90%;">Ingredient</th>
+                                <th style="width: 10%;">#</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+
+                    </table>
+                </div>
+
+                <button id="btnPost" class="btn btn-primary" type="submit">Submit form</button>
+
+            </div>
+
+
+
+        </div>
+    </div>
+</section>
+
+
+@section scripts{
+    <script>
+
+        $(document).ready(function () {
+
+            $('#addIngredient').click(function () {
+
+                if ($.trim($("#piece").val()) === "" ||
+                    $.trim($("#ingredient").val()) === "") {
+                    iziToast.info({
+                        title: 'Zorunlu',
+                        message: 'Lütfen alanları doldurunuz.',
+                    });
+                    return;
+                }
+                var piece = $("#piece").val(),
+                    ingredient = $("#ingredient").val(),
+                    detailsTableBody = $("#detailsTable tbody");
+                var cihazAdd = '<tr><td>' +
+                    piece +
+                    '</td><td>' +
+                    ingredient +
+                    '</td>' +
+                    '<td>' + ' </td></tr>';
+                detailsTableBody.append(cihazAdd);
+
+                $("#piece").val('');
+                $("#ingredient").val('');
+
+            });
+
+
+            $('#addDirections').click(function () {
+
+                if ($.trim($("#directions").val()) === "") {
+                    iziToast.info({
+                        title: 'Zorunlu',
+                        message: 'Lütfen alanları doldurunuz.',
+                    });
+                    return;
+                }
+                var directions = $("#directions").val(),
+                    detailsTableBody = $("#directionsTable tbody");
+                var cihazAdd = '<tr><td>' +
+                    directions +
+                    '</td>' +
+                    '<td>' + ' </td></tr>';
+                detailsTableBody.append(cihazAdd);
+
+                $("#directions").val('');
+
+            });
+
+
+            $("#btnPost").click(function (e) {
+                e.preventDefault();
+
+                var cihazArr = [];
+                cihazArr.length = 0;
+                $.each($("#detailsTable tbody tr"),
+                    function () {
+                        cihazArr.push({
+                            Piece: $(this).find('td:eq(0)').html(),
+                            Description: $(this).find('td:eq(1)').html()
+                        });
+                    });
+
+                var cihazArr2 = [];
+                cihazArr2.length = 0;
+                $.each($("#directionsTable tbody tr"),
+                    function () {
+                        cihazArr2.push({
+                            Description: $(this).find('td:eq(0)').html()
+                        });
+                    });
+
+                var chzObj = new Object();
+
+                chzObj.CategoryId = $("#CategoryId").val();
+                chzObj.RecipeName = $("#recipeName").val();
+                chzObj.Time = $("#time").val();
+                chzObj.Difficulty = $("#difficulty").val();
+                chzObj.Servings = $("#servings").val();
+                chzObj.Description = $("#descriptin").val();
+                chzObj.Image = $("#image").val();
+                chzObj.Ingredients = cihazArr;
+                chzObj.Directions = cihazArr2;
+                if (cihazArr.length > 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/RecipeAdd",
+                        data: JSON.stringify(chzObj),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            if (response !== null) {
+                                iziToast.sucess({
+                                    title: 'Başarılı',
+                                    message: 'Tarif eklendi.',
+                                });
+                            } else {
+                                iziToast.error({
+                                    title: 'Hata',
+                                    message: 'Hata',
+                                });
+                            }
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                } else {
+                    $.sweetAlert.Message("aksesuar_bos", "aksesuar_doldur", "info", "OK");
+                }
+
+            });
+
+        });
+    </script>
+}

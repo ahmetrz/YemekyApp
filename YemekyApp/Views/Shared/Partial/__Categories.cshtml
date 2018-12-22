@@ -1,69 +1,41 @@
-﻿
-<section id="categories">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <h2>Yemek Kategorileri</h2>
-            </div>
-        </div>
-        <div class="row wow zoomIn">
-            <!-- Breakfast - Category Item -->
-            <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
-                <div class="category-item text-center">
-                    <img src="~/Content/images/icons/milk.png" alt="milk" width="48" height="48" />
-                    <br />
-                    Breakfast
+﻿@model YemekyApp.Models.RecipeModel
+    <section id="categories">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2>Yemek Kategorileri</h2>
                 </div>
             </div>
-            <!-- Meat - Category Item -->
-            <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
-                <div class="category-item text-center">
-                    <img src="~/Content/images/icons/steak.png" alt="meat" width="48" height="48" />
-                    <br />
-                    Meat
-                </div>
+            <div class="row wow zoomIn">
+                <!-- Breakfast - Category Item -->
+               @foreach (var item in Model.Categories)
+               {
+                   <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+
+                       <div class="category-item">
+                           <img class="center" src="~/Content/images/category/@item.CategoryIcon" style="filter: brightness(0) invert(1);" width="48" height="48" />
+
+                           <div class="text-center"> @item.CategoryName</div>
+                       </div>
+                   </div>
+
+                   <style>
+                       .center {
+                           display: block;
+                           margin-left: auto;
+                           margin-right: auto;
+                       }
+                   </style>
+               }
             </div>
-            <!-- Seafood - Category Item -->
-            <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
-                <div class="category-item text-center">
-                    <img src="~/Content/images/icons/fish.png" alt="fish" width="48" height="48" />
-                    <br />
-                    Sea food
-                </div>
-            </div>
-            <!-- Snacks- Category Item -->
-            <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
-                <div class="category-item text-center">
-                    <img src="~/Content/images/icons/peanuts.png" alt="peanuts" width="48" height="48" />
-                    <br />
-                    Snacks
-                </div>
-            </div>
-            <!-- Spicy - Category Item -->
-            <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
-                <div class="category-item text-center">
-                    <img src="~/Content/images/icons/chili.png" alt="chili" width="48" height="48" />
-                    <br />
-                    Spicy
-                </div>
-            </div>
-            <!-- Vegetarian - Category Item -->
-            <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
-                <div class="category-item text-center">
-                    <img src="~/Content/images/icons/vegan.png" alt="vegan" width="48" height="48" />
-                    <br />
-                    Vegetarian
+            <div class="row wow zoomIn">
+                <div class="col-12 text-center show-all">
+                    <div class="category-item text-center">
+                        <i class="fa fa-cutlery fa-2x" aria-hidden="true"></i>
+                        <br />
+                        Show All
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="row wow zoomIn">
-            <div class="col-12 text-center show-all">
-                <div class="category-item text-center">
-                    <i class="fa fa-cutlery fa-2x" aria-hidden="true"></i>
-                    <br />
-                    Show All
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    </section>

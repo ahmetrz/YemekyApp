@@ -1,4 +1,5 @@
-﻿@{
+﻿@model YemekyApp.Models.RecipeModel
+@{
     ViewBag.Title = "";
 }
 
@@ -16,95 +17,19 @@
         </div>
         <div class="row">
             <!-- First recipe item -->
-            <div class="col-lg-4 col-md-6 col-sm-12 wow fadeIn">
-                <div class="recipe-item text-center">
-                    <a href="recipe.html">
-                        <img src="~/Content/images/bbq-pork-ribs.jpg" alt="bbq-pork-ribs" />
-                    </a>
-                    <br />
-                    <h3>Barbecue Pork Ribs</h3>
+            @foreach (var item in Model.Recipes)
+            {
+                
+                <div class="col-lg-4 col-md-6 col-sm-12 wow fadeIn">
+                    <div class="recipe-item text-center">
+                       <a href="#">
+                            <img src="~/Content/images/recipe/@item.Image" alt="bbq-pork-ribs"/>
+                        </a>
+                        <br/>
+                        <h3>@item.RecipeName</h3>
+                    </div>
                 </div>
-            </div>
-            <!-- Second recipe item -->
-            <div class="col-lg-4 col-md-6 col-sm-12 wow fadeIn">
-                <div class="recipe-item text-center">
-                    <a href="recipe.html">
-                        <img src="~/Content/images/bbq-pork-ribs.jpg" alt="bbq-pork-ribs" />
-                    </a>
-                    <br />
-                    <h3>Barbecue Pork Ribs</h3>
-                </div>
-            </div>
-            <!-- Third recipe item -->
-            <div class="col-lg-4 col-md-6 col-sm-12 wow fadeIn">
-                <div class="recipe-item text-center">
-                    <a href="recipe.html">
-                        <img src="~/Content/images/bbq-pork-ribs.jpg" alt="bbq-pork-ribs" />
-                    </a>
-                    <br />
-                    <h3>Barbecue Pork Ribs</h3>
-                </div>
-            </div>
-            <!-- Fourth recipe item -->
-            <div class="col-lg-4 col-md-6 col-sm-12 wow fadeIn">
-                <div class="recipe-item text-center">
-                    <a href="recipe.html">
-                        <img src="~/Content/images/bbq-pork-ribs.jpg" alt="bbq-pork-ribs" />
-                    </a>
-                    <br />
-                    <h3>Barbecue Pork Ribs</h3>
-                </div>
-            </div>
-            <!-- Fifth recipe item -->
-            <div class="col-lg-4 col-md-6 col-sm-12 wow fadeIn">
-                <div class="recipe-item text-center">
-                    <a href="recipe.html">
-                        <img src="~/Content/images/bbq-pork-ribs.jpg" alt="bbq-pork-ribs" />
-                    </a>
-                    <br />
-                    <h3>Barbecue Pork Ribs</h3>
-                </div>
-            </div>
-            <!-- Sixth recipe item -->
-            <div class="col-lg-4 col-md-6 col-sm-12 wow fadeIn">
-                <div class="recipe-item text-center">
-                    <a href="recipe.html">
-                        <img src="~/Content/images/bbq-pork-ribs.jpg" alt="bbq-pork-ribs" />
-                    </a>
-                    <br />
-                    <h3>Barbecue Pork Ribs</h3>
-                </div>
-            </div>
-            <!-- Seventh recipe item -->
-            <div class="col-lg-4 col-md-6 col-sm-12 wow fadeIn">
-                <div class="recipe-item text-center">
-                    <a href="recipe.html">
-                        <img src="~/Content/images/bbq-pork-ribs.jpg" alt="bbq-pork-ribs" />
-                    </a>
-                    <br />
-                    <h3>Barbecue Pork Ribs</h3>
-                </div>
-            </div>
-            <!-- Eight recipe item -->
-            <div class="col-lg-4 col-md-6 col-sm-12 wow fadeIn">
-                <div class="recipe-item text-center">
-                    <a href="recipe.html">
-                        <img src="~/Content/images/bbq-pork-ribs.jpg" alt="bbq-pork-ribs" />
-                    </a>
-                    <br />
-                    <h3>Barbecue Pork Ribs</h3>
-                </div>
-            </div>
-            <!-- Ninth recipe item -->
-            <div class="col-lg-4 col-md-6 col-sm-12 wow fadeIn">
-                <div class="recipe-item text-center">
-                    <a href="recipe.html">
-                        <img src="~/Content/images/bbq-pork-ribs.jpg" alt="bbq-pork-ribs" />
-                    </a>
-                    <br />
-                    <h3>Barbecue Pork Ribs</h3>
-                </div>
-            </div>
+            }
         </div>
     </div>
 </section>

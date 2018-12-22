@@ -8,10 +8,10 @@ namespace YemekyApp.Models
     public class RecipeModel
     {
 
-        public IEnumerable<Recipe> Recipes { get; set; }
-        public IEnumerable<Category> Categories { get; set; }
-        public IEnumerable<Directions> Directions { get; set; }
-        public IEnumerable<Ingredients> Ingredients { get; set; }
+        public List<Recipe> Recipes { get; set; }
+        public List<Category> Categories { get; set; }
+        public List<Directions> Directions { get; set; }
+        public List<Ingredients> Ingredients { get; set; }
 
     }
 }
