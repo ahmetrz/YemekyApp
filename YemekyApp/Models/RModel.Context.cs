@@ -27,8 +27,9 @@ namespace YemekyApp.Models
     
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<Directions> Directions { get; set; }
-        public virtual DbSet<Ingredients> Ingredients { get; set; }
         public virtual DbSet<Recipe> Recipe { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<Ingredients> Ingredients { get; set; }
     }
 }

@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="YemekyAppEntities-Web.config Connection String" description="YemekyAppEntities Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/Models.RModel.csdl|res://*/Models.RModel.ssdl|res://*/Models.RModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=yemekyapp.database.windows.net;initial catalog=YemekyApp;persist security info=True;user id=yemekyapp;password=0c920353@;MultipleActiveResultSets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Ukocak\\Desktop\\YemekyApp\\YemekyApp\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='YemekyAppEntities']/@connectionString" />
+  </parameter>
+</parameters>

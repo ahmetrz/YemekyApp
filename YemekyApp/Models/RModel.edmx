@@ -27,7 +27,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RecipeId" Type="int" />
-          <Property Name="Piece" Type="int" />
+          <Property Name="Piece" Type="nvarchar" MaxLength="50" />
           <Property Name="Description" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Recipe">
@@ -37,11 +37,21 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CategoryId" Type="int" />
           <Property Name="RecipeName" Type="nvarchar" MaxLength="50" />
-          <Property Name="Time" Type="time" Precision="7" />
+          <Property Name="Time" Type="nvarchar" MaxLength="50" />
           <Property Name="Difficulty" Type="nvarchar" MaxLength="50" />
           <Property Name="Servings" Type="int" />
           <Property Name="Descripition" Type="nvarchar(max)" />
           <Property Name="Image" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -101,6 +111,7 @@
           <EntitySet Name="Directions" EntityType="Self.Directions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ingredients" EntityType="Self.Ingredients" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Recipe" EntityType="Self.Recipe" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Directions_Recipe" Association="Self.FK_Directions_Recipe">
             <End Role="Recipe" EntitySet="Recipe" />
@@ -119,6 +130,26 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="YemekyAppModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="YemekyAppEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Category" EntityType="YemekyAppModel.Category" />
+          <EntitySet Name="Directions" EntityType="YemekyAppModel.Directions" />
+          <EntitySet Name="Recipe" EntityType="YemekyAppModel.Recipe" />
+          <EntitySet Name="sysdiagrams" EntityType="YemekyAppModel.sysdiagrams" />
+          <EntitySet Name="User" EntityType="YemekyAppModel.User" />
+          <AssociationSet Name="FK_Recipe_Category" Association="YemekyAppModel.FK_Recipe_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Recipe" EntitySet="Recipe" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Directions_Recipe" Association="YemekyAppModel.FK_Directions_Recipe">
+            <End Role="Recipe" EntitySet="Recipe" />
+            <End Role="Directions" EntitySet="Directions" />
+          </AssociationSet>
+          <EntitySet Name="Ingredients" EntityType="YemekyAppModel.Ingredients" />
+          <AssociationSet Name="FK_Ingredients_Recipe" Association="YemekyAppModel.FK_Ingredients_Recipe">
+            <End Role="Recipe" EntitySet="Recipe" />
+            <End Role="Ingredients" EntitySet="Ingredients" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="ID" />
@@ -132,20 +163,10 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RecipeId" Type="Int32" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Recipe" Relationship="YemekyAppModel.FK_Directions_Recipe" FromRole="Directions" ToRole="Recipe" />
-        </EntityType>
-        <EntityType Name="Ingredients">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RecipeId" Type="Int32" />
-          <Property Name="Piece" Type="Int32" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Recipe" Relationship="YemekyAppModel.FK_Ingredients_Recipe" FromRole="Ingredients" ToRole="Recipe" />
         </EntityType>
         <EntityType Name="Recipe">
           <Key>
@@ -154,7 +175,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CategoryId" Type="Int32" />
           <Property Name="RecipeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Time" Type="Time" Precision="7" />
+          <Property Name="Time" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Difficulty" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Servings" Type="Int32" />
           <Property Name="Descripition" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -163,25 +184,16 @@
           <NavigationProperty Name="Directions" Relationship="YemekyAppModel.FK_Directions_Recipe" FromRole="Recipe" ToRole="Directions" />
           <NavigationProperty Name="Ingredients" Relationship="YemekyAppModel.FK_Ingredients_Recipe" FromRole="Recipe" ToRole="Ingredients" />
         </EntityType>
-        <EntityContainer Name="YemekyAppEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Category" EntityType="Self.Category" />
-          <EntitySet Name="Directions" EntityType="Self.Directions" />
-          <EntitySet Name="Ingredients" EntityType="Self.Ingredients" />
-          <EntitySet Name="Recipe" EntityType="Self.Recipe" />
-          <EntitySet Name="User" EntityType="YemekyAppModel.User" />
-          <AssociationSet Name="FK_Recipe_Category" Association="YemekyAppModel.FK_Recipe_Category">
-            <End Role="Category" EntitySet="Category" />
-            <End Role="Recipe" EntitySet="Recipe" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Directions_Recipe" Association="YemekyAppModel.FK_Directions_Recipe">
-            <End Role="Recipe" EntitySet="Recipe" />
-            <End Role="Directions" EntitySet="Directions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Ingredients_Recipe" Association="YemekyAppModel.FK_Ingredients_Recipe">
-            <End Role="Recipe" EntitySet="Recipe" />
-            <End Role="Ingredients" EntitySet="Ingredients" />
-          </AssociationSet>
-        </EntityContainer>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="ID" />
@@ -221,6 +233,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Ingredients">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RecipeId" Type="Int32" />
+          <Property Name="Piece" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Recipe" Relationship="YemekyAppModel.FK_Ingredients_Recipe" FromRole="Ingredients" ToRole="Recipe" />
+        </EntityType>
         <Association Name="FK_Ingredients_Recipe">
           <End Type="YemekyAppModel.Recipe" Role="Recipe" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -235,7 +257,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -244,42 +266,43 @@
           <EntitySetMapping Name="Category">
             <EntityTypeMapping TypeName="YemekyAppModel.Category">
               <MappingFragment StoreEntitySet="Category">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
                 <ScalarProperty Name="CategoryIcon" ColumnName="CategoryIcon" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Directions">
             <EntityTypeMapping TypeName="YemekyAppModel.Directions">
               <MappingFragment StoreEntitySet="Directions">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="RecipeId" ColumnName="RecipeId" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Ingredients">
-            <EntityTypeMapping TypeName="YemekyAppModel.Ingredients">
-              <MappingFragment StoreEntitySet="Ingredients">
-                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="RecipeId" ColumnName="RecipeId" />
-                <ScalarProperty Name="Piece" ColumnName="Piece" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Recipe">
             <EntityTypeMapping TypeName="YemekyAppModel.Recipe">
               <MappingFragment StoreEntitySet="Recipe">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="RecipeName" ColumnName="RecipeName" />
-                <ScalarProperty Name="Time" ColumnName="Time" />
-                <ScalarProperty Name="Difficulty" ColumnName="Difficulty" />
-                <ScalarProperty Name="Servings" ColumnName="Servings" />
-                <ScalarProperty Name="Descripition" ColumnName="Descripition" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Descripition" ColumnName="Descripition" />
+                <ScalarProperty Name="Servings" ColumnName="Servings" />
+                <ScalarProperty Name="Difficulty" ColumnName="Difficulty" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="RecipeName" ColumnName="RecipeName" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="YemekyAppModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -291,6 +314,16 @@
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ingredients">
+            <EntityTypeMapping TypeName="YemekyAppModel.Ingredients">
+              <MappingFragment StoreEntitySet="Ingredients">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Piece" ColumnName="Piece" />
+                <ScalarProperty Name="RecipeId" ColumnName="RecipeId" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

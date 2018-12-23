@@ -16,7 +16,7 @@ namespace YemekyApp.Models
     {
         public int ID { get; set; }
         public Nullable<int> RecipeId { get; set; }
-        public Nullable<int> Piece { get; set; }
+        public string Piece { get; set; }
         public string Description { get; set; }
     
         public virtual Recipe Recipe { get; set; }

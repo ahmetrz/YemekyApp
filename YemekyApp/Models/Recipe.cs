@@ -24,7 +24,7 @@ namespace YemekyApp.Models
         public int ID { get; set; }
         public Nullable<int> CategoryId { get; set; }
         public string RecipeName { get; set; }
-        public Nullable<System.TimeSpan> Time { get; set; }
+        public string Time { get; set; }
         public string Difficulty { get; set; }
         public Nullable<int> Servings { get; set; }
         public string Descripition { get; set; }

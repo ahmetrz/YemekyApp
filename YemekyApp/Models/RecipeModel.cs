@@ -8,6 +8,7 @@ namespace YemekyApp.Models
     public class RecipeModel
     {
 
+        public Recipe recipe { get; set; } 
         public List<Recipe> Recipes { get; set; }
         public List<Category> Categories { get; set; }
         public List<Directions> Directions { get; set; }

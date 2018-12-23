@@ -165,6 +165,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\sysdiagrams.cs">
+      <DependentUpon>RModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\User.cs">
       <DependentUpon>RModel.tt</DependentUpon>
     </Compile>
@@ -448,14 +451,15 @@
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
-    <Content Include="Views\Recipes\Create.cshtml" />
-    <Content Include="Views\Recipes\Delete.cshtml" />
-    <Content Include="Views\Recipes\Details.cshtml" />
-    <Content Include="Views\Recipes\Edit.cshtml" />
-    <Content Include="Views\Recipes\Index.cshtml" />
+    <Content Include="Views\Home\RecipeCreate.cshtml" />
+    <Content Include="Views\Home\RecipeDelete.cshtml" />
+    <Content Include="Views\Home\RecipeDetails.cshtml" />
+    <Content Include="Views\Home\RecipeEdit.cshtml" />
+    <Content Include="Views\Home\Recipes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Recipes\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

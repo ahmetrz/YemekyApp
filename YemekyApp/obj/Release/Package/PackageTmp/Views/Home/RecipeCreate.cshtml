@@ -1,0 +1,444 @@
+﻿@model YemekyApp.Models.Recipe
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="col-lg-12">
+    <br />
+    <h4>Recipe</h4>
+    <hr />
+
+    <div class="form-row">
+        <div class="col-md-4 mb-3">
+            <label for="validationDefault01">Recipe Name</label>
+            <input type="text" class="form-control" id="recipeName" placeholder="Recipe Name" required>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="validationDefault02">Time</label>
+            <input type="number" class="form-control" id="time" required>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="validationDefaultUsername">Difficulty</label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="difficulty" placeholder="Difficulty" required>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-4 mb-3">
+            <label for="validationDefaultUsername">Category</label>
+
+            <!-- Button trigger modal -->
+            <a href="#exampleModal" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal">
+                New Category
+            </a>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">New Category</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-md-12 mb-3">
+                                <label for="validationDefault04">Category</label>
+                                <input type="text" class="form-control" id="CategoryName" placeholder="Category Name" required>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="validationDefault05">Image</label>
+                                <input type="file" class="form-control" id="CategoryImage" placeholder="Image">
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button id="btnCategoryAdd" type="button" class="btn btn-primary">Add Category</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+        </div>
+
+
+        <div class="col-md-4 mb-3">
+            <label for="validationDefault04">Servings</label>
+            <input type="text" class="form-control" id="servings" placeholder="Servings" required>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="validationDefault05">Image</label>
+            <input type="file" class="form-control" id="image" placeholder="Image">
+        </div>
+
+    </div>
+    <div class="form-row">
+
+        <div class="col-md-12 mb-3">
+            <label for="validationDefault03">Description</label>
+      
+
+            <textarea type="text" class="desc form-control" rows="5" id="description"></textarea>
+        </div>
+    </div>
+
+
+    <h4>Ingredients</h4>
+    <hr />
+    <div class="form-row">
+        <div class="col-md-1 mb-3">
+            <label>Add</label><br />
+            <button id="addIngredient" class="btn btn-success form-control" type="button"> + </button>
+        </div>
+
+        <div class="col-md-2 mb-3">
+            <label for="validationDefault04">Piece</label>
+            <input type="number" class="form-control" id="piece" placeholder="Piece">
+        </div>
+        <div class="col-md-9 mb-3">
+            <label for="validationDefault05">Ingredient</label>
+            <input type="text" class="form-control" id="ingredient" placeholder="Ingredient">
+        </div>
+
+        <table id="detailsTable" class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th style="width: 10%;">Piece</th>
+                    <th style="width: 80%;">Ingredient</th>
+                    <th style="width: 10%;">#</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+
+        </table>
+    </div>
+
+
+
+    <h4>Directions</h4>
+    <hr />
+    <div class="form-row">
+        <div class="col-md-1 mb-3">
+            <label>Add</label><br />
+            <button id="addDirections" class="btn btn-success form-control" type="button"> + </button>
+        </div>
+        <div class="col-md-11 mb-3">
+            <label for="validationDefault05">Directions</label>
+            <input type="text" class="form-control" id="directions" placeholder="Directions">
+        </div>
+
+        <table id="directionsTable" class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th style="width: 90%;">Ingredient</th>
+                    <th style="width: 10%;">#</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+
+        </table>
+    </div>
+
+    <button id="btnPost" class="btn btn-primary" type="submit">Submit form</button>
+
+</div>
+
+
+
+
+@section scripts{
+    <script>
+
+        $(document).ready(function () {
+            $('#CategoryId').select2({
+                ajax: {
+                    url: '/categoriesList',
+                    data: function (params) {
+                        return {
+                            q: params.term // arama terimi
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.items
+                        };
+                    }
+                },
+                placeholder: "Select Category"
+
+            });
+
+
+
+            $('#addIngredient').click(function () {
+
+                if ($.trim($("#piece").val()) === "" ||
+                    $.trim($("#ingredient").val()) === "") {
+                    iziToast.info({
+                        title: 'Zorunlu',
+                        message: 'Lütfen alanları doldurunuz.',
+                    });
+                    return;
+                }
+                var piece = $("#piece").val(),
+                    ingredient = $("#ingredient").val(),
+                    detailsTableBody = $("#detailsTable tbody");
+                var cihazAdd = '<tr><td>' +
+                    piece +
+                    '</td><td>' +
+                    ingredient +
+                    '</td>' +
+                    '<td>' + ' </td></tr>';
+                detailsTableBody.append(cihazAdd);
+
+                $("#piece").val('');
+                $("#ingredient").val('');
+
+            });
+
+
+            $('#addDirections').click(function () {
+
+                if ($.trim($("#directions").val()) === "") {
+                    iziToast.info({
+                        title: 'Zorunlu',
+                        message: 'Lütfen alanları doldurunuz.',
+                    });
+                    return;
+                }
+                var directions = $("#directions").val(),
+                    detailsTableBody = $("#directionsTable tbody");
+                var cihazAdd = '<tr><td>' +
+                    directions +
+                    '</td>' +
+                    '<td>' + ' </td></tr>';
+                detailsTableBody.append(cihazAdd);
+
+                $("#directions").val('');
+
+            });
+
+
+            $("#btnPost").click(function (e) {
+                e.preventDefault();
+
+
+
+
+                if ($.trim($("#image").val()) === "") {
+                    iziToast.info({
+                        title: 'Zorunlu',
+                        message: 'Lütfen alanları doldurunuz.',
+                    });
+                    return;
+                }
+                if (window.FormData !== undefined) {
+
+                    var fileUpload = $("#image").get(0);
+                    var files = fileUpload.files;
+
+                    // Create FormData object
+                    var fileData = new FormData();
+
+                    // Looping over all files and add it to FormData object
+                    for (var i = 0; i < files.length; i++) {
+                        fileData.append(files[i].name, files[i]);
+                    }
+
+                    // Adding one more key to FormData object
+                    fileData.append('username', 'Manas');
+
+
+                    $.ajax({
+                        url: '/Home/UploadFiles',
+                        type: "POST",
+                        contentType: false, // Not to set any content header
+                        processData: false, // Not to process data
+                        data: fileData,
+                        success: function (result) {
+
+                        },
+                        error: function (err) {
+                            alert(err.statusText);
+                        }
+                    });
+
+                } else {
+                    alert("FormData is not supported.");
+                }
+
+
+
+
+                var cihazArr = [];
+                cihazArr.length = 0;
+                $.each($("#detailsTable tbody tr"),
+                    function () {
+                        cihazArr.push({
+                            Piece: $(this).find('td:eq(0)').html(),
+                            Description: $(this).find('td:eq(1)').html()
+                        });
+                    });
+
+                var cihazArr2 = [];
+                cihazArr2.length = 0;
+                $.each($("#directionsTable tbody tr"),
+                    function () {
+                        cihazArr2.push({
+                            Description: $(this).find('td:eq(0)').html()
+                        });
+                    });
+
+                var chzObj = new Object();
+                var fileInput = document.getElementById('image');
+                var filename = fileInput.files[0].name;
+                chzObj.CategoryId = $("#CategoryId").val();
+                chzObj.RecipeName = $("#recipeName").val();
+                chzObj.RecipeTime = $("#time").val();
+                chzObj.Difficulty = $("#difficulty").val();
+                chzObj.Servings = $("#servings").val();
+                chzObj.Description = $("#description").val();
+                chzObj.Image = filename;
+                chzObj.Ingredients = cihazArr;
+                chzObj.Directions = cihazArr2;
+                if (cihazArr.length > 0 && cihazArr2.length > 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/RecipeAdd",
+                        data: JSON.stringify(chzObj),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            if (response !== null) {
+                                iziToast.success({
+                                    title: 'Başarılı',
+                                    message: 'Tarif eklendi.',
+                                });
+                                location.reload();
+
+                            } else {
+                                iziToast.error({
+                                    title: 'Hata',
+                                    message: 'Hata',
+                                });
+                            }
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                } else {
+                    iziToast.info({
+                        title: 'Uyarı!',
+                        message: 'Lütfen gerekli alanları doldurunuz.',
+                    });
+                }
+
+            });
+
+
+            $("#btnCategoryAdd").click(function (e) {
+                e.preventDefault();
+
+
+                if ($.trim($("#CategoryImage").val()) === "") {
+                    iziToast.info({
+                        title: 'Zorunlu',
+                        message: 'Lütfen alanları doldurunuz.',
+                    });
+                    return;
+                }
+                if (window.FormData !== undefined) {
+
+                    var fileUpload = $("#CategoryImage").get(0);
+                    var files = fileUpload.files;
+
+                    // Create FormData object
+                    var fileData = new FormData();
+
+                    // Looping over all files and add it to FormData object
+                    for (var i = 0; i < files.length; i++) {
+                        fileData.append(files[i].name, files[i]);
+                    }
+
+                    // Adding one more key to FormData object
+                    fileData.append('username', 'Manas');
+
+
+                    $.ajax({
+                        url: '/Home/UploadFiles',
+                        type: "POST",
+                        contentType: false, // Not to set any content header
+                        processData: false, // Not to process data
+                        data: fileData,
+                        success: function (result) {
+
+                        },
+                        error: function (err) {
+                            alert(err.statusText);
+                        }
+                    });
+
+                } else {
+                    alert("FormData is not supported.");
+                }
+
+
+                var chzObj = new Object();
+                var fileInput = document.getElementById('CategoryImage');
+                var filename = fileInput.files[0].name;
+                chzObj.CategoryName = $("#CategoryName").val();
+                chzObj.CategoryIcon = filename;
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/CategoryAdd",
+                    data: JSON.stringify(chzObj),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response !== null) {
+                            iziToast.success({
+                                title: 'Başarılı',
+                                message: 'Kategori eklendi.',
+                            });
+                            $("#CategoryImage").val('');
+                            $("#CategoryName").val('');
+                            $("#exampleModal").modal('hide');
+
+                        } else {
+                            iziToast.error({
+                                title: 'Hata',
+                                message: 'Hata',
+                            });
+                        }
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+
+
+
+            });
+
+
+        });
+
+
+
+    </script>
+}
