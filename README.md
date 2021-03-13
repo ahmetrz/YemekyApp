@@ -1,0 +1,1 @@
+# YemekyApp yayından kaldırıldı
